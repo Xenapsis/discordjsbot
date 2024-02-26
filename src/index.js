@@ -11,7 +11,7 @@ let newrow = null;
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
-
+console.log(process.env.BOOSTER_ROLE)
 const client = new Client({
     intents: [
         IntentsBitField.Flags.Guilds,
@@ -73,7 +73,7 @@ client.on('interactionCreate',(interaction) => {
 
     }
     if (interaction.customId === 'premiumbutton'){
-        if (!interaction.member.roles.cache.has(`1161527100159836170`)){
+        if (!interaction.member.roles.cache.has(process.env.BOOSTER_ROLE)){
             return interaction.reply({content: 'Sorry but your NOT a booster :(',ephemeral: true})
             return;
         }
