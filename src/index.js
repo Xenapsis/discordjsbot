@@ -91,7 +91,6 @@ client.on('interactionCreate',(interaction) => {
                     var timenow = interaction.createdTimestamp;
                     insertdata.run(user, timenow);
                     insertdata.finalize();
-                    db.close();
                     console.log("NEW ROW");
                     newrow = true;
                 } else if (row.Premium == undefined) {
@@ -145,13 +144,9 @@ client.on('interactionCreate',(interaction) => {
             setTimeout(() => {
                 if (newrow != false) {
                     interaction.editReply({content: 'Check your DMS for your free link',ephemeral: true})
-                }
-            }, 1010);
-
-            setTimeout(() => {
-                if (newrow != false) {
                     interaction.member.send({embeds: [embed3]});
                     db.run(`UPDATE data SET Time = ? WHERE userid = ?;`, [timenow, user]);
+                    db.close();
                 }
             }, 1010);
 
@@ -171,7 +166,6 @@ client.on('interactionCreate',(interaction) => {
                         var timenow = interaction.createdTimestamp;
                         insertdata.run(user, timenow, null);
                         insertdata.finalize();
-                        db.close();
                         console.log("NEW ROW");
                         newrow = true;
                     } else if (row.Time == undefined) {
@@ -226,14 +220,9 @@ client.on('interactionCreate',(interaction) => {
                 setTimeout(() => {
                     if (newrow != false) {
                         interaction.editReply({content: 'Check your DMS for your free link',ephemeral: true})
-                    }
-                }, 1010);
-
-                setTimeout(() => {
-                    if (newrow != false) {
-                        
                         interaction.member.send({embeds: [embed2]})
                         db.run(`UPDATE data SET Time = ? WHERE userid = ?;`, [timenow, user]);
+                        db.close();
                     }
                 }, 1010);
         }, 250);
