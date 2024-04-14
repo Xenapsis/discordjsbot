@@ -1,0 +1,7 @@
+# Xenapsis Link Dispenser
+
+Dispense your website links to your viewers for freeXenapsis makes it easy to make this a future feature for your server. This link dispenser makes it easy to change out links and give premium links to your server boosters. The bot makes it easy to keep track of people who use your bot and to hand out links properly.
+
+<h1>Setting it up</h1>
+
+To set it up download <a href="https://sqlitebrowser.org">DBBrowser</a> This will allow you to have access to your database and reset or change things in the database. Find your .env file and replace the text with your bot token, guild id, client id, and booster role id. Now run ``` npm i``` and ``` npm install sqlite3``` if this does not work make sure you have nodejs installed. finally run the command npm start to run your bot. Finally in your server run /links to make a embed of your link dispenser.
