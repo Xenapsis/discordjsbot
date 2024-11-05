@@ -107,8 +107,12 @@ client.on('interactionCreate',(interaction) => {
                     console.log("OLD ROW");
                     console.log(row.Premium)
                     if (time < expiration) {
+                        var addedtime = expiration - time
+                        var waittime = addedtime / 1000;
                         newrow = false;
-                        console.log(total);
+                        setTimeout(() => {
+                            interaction.editReply({content: 'Stop Your on cooldown for ' + waittime + ' seconds',ephemeral: true});
+                        }, 1000);
                         return;
 
                     } else {
@@ -119,12 +123,6 @@ client.on('interactionCreate',(interaction) => {
             
             var addedtime = expiration - time
             var waittime = addedtime / 1000;
-            setTimeout(() => {
-                if (newrow === false) {
-                    interaction.editReply({content: 'Stop Your on cooldown for ' + waittime + ' seconds',ephemeral: true});
-                    return;
-                }
-            }, 1000);
 
 
 
@@ -182,21 +180,18 @@ client.on('interactionCreate',(interaction) => {
                         var expiration = timenow + cdd
                         console.log("OLD ROW");
                         if (time < expiration) {
+                            var addedtime = expiration - time
+                            var waittime = addedtime / 1000;
                             newrow = false;
+                            setTimeout(() => {
+                                interaction.editReply({content: 'Stop Your on cooldown for ' + waittime + ' seconds',ephemeral: true});
+                            }, 1000);
                             return;
                         } else {
                             newrow = true
                         }
                     };
                 });
-                var addedtime = expiration - time
-                var waittime = addedtime / 1000;
-                setTimeout(() => {
-                    if (newrow === false) {
-                        interaction.editReply({content: 'Stop Your on cooldown for ' + waittime + ' seconds',ephemeral: true});
-                        return;
-                    }
-                }, 1000);
 
                 
 
