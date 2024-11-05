@@ -1,0 +1,4 @@
+Hello, to make a database for this all you need to do is 
+go into the directory of this file (utils/database) and type "sqlite3 database.db" in the command line (Must have sqlite3 installed)
+Next you will need to make the table type "CREATE TABLE data(userid INT NOT NULL, Time INT, Premium INT);"
+And now your database is ready!

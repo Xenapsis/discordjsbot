@@ -73,15 +73,17 @@ client.on('interactionCreate',(interaction) => {
 
     }
     if (interaction.customId === 'premiumbutton'){
-        if (!interaction.member.roles.cache.has(process.env.BOOSTER_ROLE)){
-            return interaction.reply({content: 'Sorry but your NOT a booster :(',ephemeral: true})
-            return;
+        if (!interaction.member.roles.cache.has('1161527100159836170')){   
+            if (!interaction.member.roles.cache.has(process.env.BOOSTER_ROLE)){
+                return interaction.reply({content: 'Sorry but your NOT a booster :(',ephemeral: true})
+                
+            }
         }
         interaction.reply({content:'Working on it',ephemeral: true});
         var user = interaction.user.id;
         setTimeout(() => {
             var timenow = interaction.createdTimestamp;
-            var cd = 86000
+            var cd = 86000 // in seconds
             db.get(query, [user], (err, row) => {
                 if (err) {
                     console.log(err)
@@ -104,9 +106,9 @@ client.on('interactionCreate',(interaction) => {
                     total = timenow - time;
                     console.log("OLD ROW");
                     console.log(row.Premium)
-                    if (total / 1000 < 86000) {
+                    if (total < 86000) {
                         newrow = false;
-                        console.log(total / 1000);
+                        console.log(total);
                         return;
 
                     } else {
@@ -114,8 +116,8 @@ client.on('interactionCreate',(interaction) => {
                     };
                 };
             });
-            var seconds = total / 1000
-            var cooldown = cd - seconds;
+            
+            var cooldown = cd - total;
             setTimeout(() => {
                 if (newrow === false) {
                     interaction.editReply({content: 'Stop Your on cooldown for ' + cooldown + ' seconds',ephemeral: true});
@@ -145,7 +147,7 @@ client.on('interactionCreate',(interaction) => {
                 if (newrow != false) {
                     interaction.editReply({content: 'Check your DMS for your free link',ephemeral: true})
                     interaction.member.send({embeds: [embed3]});
-                    db.run(`UPDATE data SET Time = ? WHERE userid = ?;`, [timenow, user]);
+                    db.run(`UPDATE data SET Premium = ? WHERE userid = ?;`, [timenow, user]);
                     db.close();
                 }
             }, 1010);
@@ -162,9 +164,9 @@ client.on('interactionCreate',(interaction) => {
                 interaction.reply({content:'Working on it',ephemeral: true});
                 db.get(query, [user], (err, row) => {
                     if (row === undefined) {
-                        let insertdata = db.prepare(`INSERT INTO data VALUES(?,?,?)`);
+                        let insertdata = db.prepare(`INSERT INTO data (userid, Time) VALUES(?,?)`);
                         var timenow = interaction.createdTimestamp;
-                        insertdata.run(user, timenow, null);
+                        insertdata.run(user, timenow,);
                         insertdata.finalize();
                         console.log("NEW ROW");
                         newrow = true;
@@ -178,18 +180,16 @@ client.on('interactionCreate',(interaction) => {
                         var timenow = interaction.createdTimestamp;
                         total = timenow - time;
                         console.log("OLD ROW");
-                        if (total / 1000 < 86000) {
+                        if (total < 86000) {
                             newrow = false;
-                            console.log(total / 1000);
+                            console.log(total);
                             return;
                         } else {
                             newrow = true
                         }
                     };
                 });
-                var seconds = total / 1000
-                var integer = Math.round(Number(seconds))
-                var cooldown = cd - integer;
+                var cooldown = cd - total;
                 setTimeout(() => {
                     if (newrow === false) {
                         interaction.editReply({content: 'Stop Your on cooldown for ' + cooldown + ' seconds',ephemeral: true});
