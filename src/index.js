@@ -81,32 +81,32 @@ client.on('interactionCreate',(interaction) => {
         }
         interaction.reply({content:'Working on it',ephemeral: true});
         var user = interaction.user.id;
+        var cdd = 86400000
         setTimeout(() => {
-            var timenow = interaction.createdTimestamp;
-            var cd = 86000 // in seconds
+            var timenow = Date.now()
             db.get(query, [user], (err, row) => {
                 if (err) {
                     console.log(err)
                 }
                 if (row === undefined) {
                     let insertdata = db.prepare(`INSERT INTO data (userid, premium) VALUES(?,?)`);
-                    var timenow = interaction.createdTimestamp;
+                    var timenow = Date.now()
                     insertdata.run(user, timenow);
                     insertdata.finalize();
                     console.log("NEW ROW");
                     newrow = true;
                 } else if (row.Premium == undefined) {
-                    var timenow = interaction.createdTimestamp;
+                    var timenow = Date.now()
                     db.run(`UPDATE data SET Premium = ? WHERE userid = ?;`, [timenow, user]);
                     console.log("Updating Premium for " + user);
                     newrow = true;
                 } else {
                     var time = row.Premium;
-                    var timenow = interaction.createdTimestamp;
-                    total = timenow - time;
+                    var timenow = Date.now()
+                    var expiration = Date.now() + cdd
                     console.log("OLD ROW");
                     console.log(row.Premium)
-                    if (total < 86000) {
+                    if (time < expiration) {
                         newrow = false;
                         console.log(total);
                         return;
@@ -117,10 +117,11 @@ client.on('interactionCreate',(interaction) => {
                 };
             });
             
-            var cooldown = cd - total;
+            var addedtime = expiration - time
+            var waittime = addedtime / 1000;
             setTimeout(() => {
                 if (newrow === false) {
-                    interaction.editReply({content: 'Stop Your on cooldown for ' + cooldown + ' seconds',ephemeral: true});
+                    interaction.editReply({content: 'Stop Your on cooldown for ' + waittime + ' seconds',ephemeral: true});
                     return;
                 }
             }, 1000);
@@ -159,40 +160,40 @@ client.on('interactionCreate',(interaction) => {
     if (interaction.customId === 'freebutton') {
         setTimeout(() => {
                 var user = interaction.user.id;
-                var timenow = interaction.createdTimestamp;
-                var cd = 86000
+                var timenow = Date.now();
+                var cdd = 86400000
                 interaction.reply({content:'Working on it',ephemeral: true});
                 db.get(query, [user], (err, row) => {
                     if (row === undefined) {
                         let insertdata = db.prepare(`INSERT INTO data (userid, Time) VALUES(?,?)`);
-                        var timenow = interaction.createdTimestamp;
+                        var timenow = Date.now();
                         insertdata.run(user, timenow,);
                         insertdata.finalize();
                         console.log("NEW ROW");
                         newrow = true;
                     } else if (row.Time == undefined) {
-                        var timenow = interaction.createdTimestamp;
+                        var timenow = Date.now();
                         db.run(`UPDATE data SET Time = ? WHERE userid = ?;`, [timenow, user]);
                         console.log("Updating Time for " + user);
                         newrow = true;
                     } else {
                         var time = row.Time;
-                        var timenow = interaction.createdTimestamp;
-                        total = timenow - time;
+                        var timenow = Date.now();
+                        var expiration = timenow + cdd
                         console.log("OLD ROW");
-                        if (total < 86000) {
+                        if (time < expiration) {
                             newrow = false;
-                            console.log(total);
                             return;
                         } else {
                             newrow = true
                         }
                     };
                 });
-                var cooldown = cd - total;
+                var addedtime = expiration - time
+                var waittime = addedtime / 1000;
                 setTimeout(() => {
                     if (newrow === false) {
-                        interaction.editReply({content: 'Stop Your on cooldown for ' + cooldown + ' seconds',ephemeral: true});
+                        interaction.editReply({content: 'Stop Your on cooldown for ' + waittime + ' seconds',ephemeral: true});
                         return;
                     }
                 }, 1000);
