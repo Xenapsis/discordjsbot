@@ -34,13 +34,13 @@ client.on('message', (message) => {
 
 client.on('interactionCreate',(interaction) => {
     let db = new sqlite.Database('./utils/database/database.db', sqlite.OPEN_READWRITE);
-    const links = ["https://Griniszaddy.jaluzinov.ru", "https://goofygoober.jaluzinov.ru/", "https://Ianeatsjunkfood.gerastar.ru", "https://lightspeedredneck.jaluzinov.ru"];
-    const premium = ["https://freebsd.cnew.ir", "https://xenapsissolosgamebyte.sorynov.cl", "https://riplightspeed.cnew.ir", "https://getbypassed.jaluzinov.ru"]
+    const links = ["https://whoops.samyog.com.np", "https://lightspeedcantkeepup.ecodryfruits.com", "https://notmath.gurdit.com", "https://sigam.lumeacopiilorploiesti.ro/"];
+    const premium = ["https://icantfindagoodname.jophey.net", "https://igotracksnowrhonda.cloudbarfbag.com", "https://zamn.laviewddns.com", "https://damn.designjobs.eu"]
 
 
 
     if (interaction.commandName === 'links') {
-        if (!interaction.member.roles.cache.has(`1179905654345957488`)) {
+        if (!interaction.member.roles.cache.has(`1303572743916355616`)) {
             interaction.reply({content: 'Sorry but your not a helper bwomp',ephemeral: true})
             return;
         }
@@ -53,7 +53,7 @@ client.on('interactionCreate',(interaction) => {
         .addFields({name: 'Premium Users (Boosters) 🔮', value: '1 use per 1 day + free uses', inline: true})
         .addFields({name: 'Do NOT Share 🔨', value: 'Sharing will result in a ban and the website getting blocked faster by an admin'})
         .addFields({name: 'Premium links are proven to work and updated more often', value: 'Free links may be outdated or blocked!'})
-        .addFields({name: 'Links Changed every Month', value: 'Links change at the first day of the month', inline: true})
+        .addFields({name: 'Links Changed every Month', value: 'Links change at the first day of the month (Premium links may change more often!)', inline: true})
         .setThumbnail('https://xenapsis.github.io/imgs/favicon.png')
 
         const button = new ButtonBuilder()
@@ -103,16 +103,18 @@ client.on('interactionCreate',(interaction) => {
                 } else {
                     var time = row.Premium;
                     var timenow = Date.now()
-                    var expiration = Date.now() + cdd
-                    console.log("OLD ROW");
-                    console.log(row.Premium)
-                    if (time < expiration) {
-                        var addedtime = expiration - time
-                        var waittime = addedtime / 1000;
+                    var expiration = time + cdd
+                    if (timenow < expiration) {
                         newrow = false;
+                        var addedtime = expiration - timenow
+                        var waittime = addedtime / 1000;
                         setTimeout(() => {
-                            interaction.editReply({content: 'Stop Your on cooldown for ' + waittime + ' seconds',ephemeral: true});
+                            if (newrow === false) {
+                                interaction.editReply({content: 'Stop Your on cooldown for ' + waittime + ' seconds',ephemeral: true});
+                                return;
+                            }
                         }, 1000);
+                        console.log(total);
                         return;
 
                     } else {
@@ -121,8 +123,7 @@ client.on('interactionCreate',(interaction) => {
                 };
             });
             
-            var addedtime = expiration - time
-            var waittime = addedtime / 1000;
+            
 
 
 
@@ -176,17 +177,18 @@ client.on('interactionCreate',(interaction) => {
                         newrow = true;
                     } else {
                         var time = row.Time;
-                        var timenow = Date.now();
-                        var expiration = timenow + cdd
-                        console.log("OLD ROW");
-                        if (time < expiration) {
-                            var addedtime = expiration - time
-                            var waittime = addedtime / 1000;
+                        var timenow = Date.now()
+                        var expiration = time + cdd
+                        if (timenow < expiration) {
                             newrow = false;
+                            var addedtime = expiration - timenow
+                            var waittime = addedtime / 1000;
                             setTimeout(() => {
-                                interaction.editReply({content: 'Stop Your on cooldown for ' + waittime + ' seconds',ephemeral: true});
+                                if (newrow === false) {
+                                    interaction.editReply({content: 'Stop Your on cooldown for ' + waittime + ' seconds',ephemeral: true});
+                                    return;
+                                }
                             }, 1000);
-                            return;
                         } else {
                             newrow = true
                         }
